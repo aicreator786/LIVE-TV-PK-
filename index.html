@@ -3755,7 +3755,7 @@ const playerSection = document.getElementById('playerSection');
 
 let currentChannel = null;
 let currentChannelIndex = -1;
-let hls = null;
+let hls = null; window.hls = null;
 let isPlaying = false;
 let isMuted = false;
 let overlayTimer = null;
@@ -4389,7 +4389,7 @@ function _startHlsJs(finalUrl, onReady, vid) {
     }
   };
 
-  hls = new Hls(hlsCfg);
+  hls = new Hls(hlsCfg); window.hls = hls;
   // ⚠️ IMPORTANT: attachMedia PEHLE, loadSource BAAD MEIN
   // Yeh Android WebView mein MSE video decode ki guarantee deta hai
   hls.attachMedia(vid);
@@ -5900,7 +5900,7 @@ function loadMovie(movie) {
         fragLoadingTimeOut: 45000, manifestLoadingTimeOut: 20000,
         nudgeMaxRetry: 10, liveDurationInfinity: false,
       });
-      hls.loadSource(movie.url);
+      window.hls = hls; hls.loadSource(movie.url);
       hls.attachMedia(video);
       hls.on(Hls.Events.MANIFEST_PARSED, tryPlay);
       hls.on(Hls.Events.ERROR, (e, data) => {
