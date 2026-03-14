@@ -4482,8 +4482,32 @@ function togglePiP(){
   } else if(document.pictureInPictureEnabled){
     video.requestPictureInPicture()
       .then(()=>showToast('⧉','Picture-in-Picture chalu!'))
-      .catch(()=>showToast('⚠️','PiP is browser mein support nahi'));
-  } else showToast('⚠️','PiP is device mein support nahi');
+      .catch(()=>_activateCustomPiP());
+  } else {_activateCustomPiP();}
+}
+function _activateCustomPiP(){
+  if(!currentChannel)return;
+  var mini=document.getElementById('miniPlayer');
+  var miniV=document.getElementById('miniVideo');
+  if(!mini||!miniV){showToast('warning','Mini player nahi mila');return;}
+  if(typeof miniPlayerActive!=='undefined'&&miniPlayerActive){closeMiniPlayer();showToast('pip','PiP band hua');return;}
+  if(window.hls&&window._currentUrl){
+    if(window._miniHls){try{window._miniHls.destroy();}catch(e){}window._miniHls=null;}
+    if(typeof Hls!=='undefined'&&Hls.isSupported()){
+      window._miniHls=new Hls({enableWorker:false,maxBufferLength:6,startLevel:0});
+      window._miniHls.attachMedia(miniV);
+      window._miniHls.on(Hls.Events.MEDIA_ATTACHED,function(){window._miniHls.loadSource(window._currentUrl);});
+      window._miniHls.on(Hls.Events.MANIFEST_PARSED,function(){miniV.muted=true;miniV.play().catch(function(){});});
+      window._miniHls.on(Hls.Events.ERROR,function(e,data){if(data.fatal)closeMiniPlayer();});
+    }
+  }else if(video.src&&video.src.indexOf('blob:')<0){
+    miniV.src=video.src;miniV.muted=true;miniV.play().catch(function(){});
+  }else{showToast('warning','Is stream par PiP support nahi');return;}
+  var miniName=document.getElementById('miniChName');
+  if(miniName)miniName.textContent=currentChannel.name||'--';
+  mini.style.display='block';
+  if(typeof miniPlayerActive!=='undefined')miniPlayerActive=true;
+  showToast('pip','PiP chalu - scroll kar saktay hain!');
 }
 function toggleSettingsPanel(e) {
   if (e) e.stopPropagation();
