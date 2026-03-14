@@ -1,0 +1,29 @@
+{
+  "appId": "com.streampak.live",
+  "appName": "StreamPak",
+  "webDir": "www",
+  "server": {
+    "url": "https://aicreator786.github.io/LIVE-TV-PK-/",
+    "cleartext": true,
+    "allowNavigation": ["*"]
+  },
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false,
+    "mediaPlaybackRequiresUserGesture": false,
+    "allowFileAccess": true,
+    "allowContentAccess": true,
+    "allowFileAccessFromFileURLs": true,
+    "allowUniversalAccessFromFileURLs": true,
+    "mixedContentMode": 0
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 2500,
+      "backgroundColor": "#0a0a0f",
+      "showSpinner": false,
+      "androidScaleType": "CENTER_CROP"
+    }
+  }
+}
