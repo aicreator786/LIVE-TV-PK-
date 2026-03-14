@@ -4316,11 +4316,11 @@ console.log('%c⚠️ This application is protected. Unauthorized access is proh
 // ============================================================
 let _retryCount = 0;
 let _retryTimer = null;
-let _currentUrl  = '';
+window._currentUrl = '';
 let _networkErrorCount = 0;
 
 function smartLoadHls(url, onReady) {
-  _currentUrl = url;
+  window._currentUrl = url; _currentUrl = url;
   _retryCount = 0;
   _networkErrorCount = 0;
   clearTimeout(_retryTimer);
